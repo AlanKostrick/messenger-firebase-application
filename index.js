@@ -5,6 +5,8 @@ import Messages from './src/components/Messages';
 import Message from './src/components/Message';
 import MessageUpdate from './src/components/MessageUpdate';
 import Tags from './src/components/Tags';
+import SignUp from './src/components/SignUp';
+import LogIn from './src/components/LogIn';
 import './css/style.css';
 
 pageBuild();
@@ -13,6 +15,8 @@ function pageBuild() {
   header();
   navHome();
   navMessages();
+  navLogIn();
+  navSignUp();
   footer();
 }
 
@@ -30,6 +34,36 @@ function navHome() {
   const homeButton = document.querySelector('.nav-list__home');
   homeButton.addEventListener('click', function() {
     getAppContext().innerHTML = Home();
+  });
+}
+
+function navSignUp() {
+  const signUpButton = document.querySelector('.nav-list__signup');
+  signUpButton.addEventListener('click', function() {
+    getAppContext().innerHTML = SignUp();
+  });
+
+  getAppContext().addEventListener('click', function() {
+    if (event.target.classList.contains('signup-submit')) {
+      const signUpForm = document.querySelector('.main-content__signup-form');
+      const email = document.querySelector('#signup-email').value;
+      const password = document.querySelector('#signup-password').value;
+
+      //sign up the user
+      //asynchronous ...will take some time to complete and will need a promise
+      const auth = firebase.auth();
+      auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        console.log(cred);
+      });
+      signUpForm.reset();
+    }
+  });
+}
+
+function navLogIn() {
+  const logInButton = document.querySelector('.nav-list__login');
+  logInButton.addEventListener('click', function() {
+    getAppContext().innerHTML = LogIn();
   });
 }
 
