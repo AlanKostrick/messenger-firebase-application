@@ -104,7 +104,7 @@ function navMessages() {
           if (user) {
             getAppContext().innerHTML = Messages(messages);
           } else {
-            getAppContext().innerText = 'Log in to see the message board';
+            getAppContext().innerHTML = `<h1>Log in to see the message board</h1>`;
           }
         });
       });
