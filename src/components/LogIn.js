@@ -5,7 +5,7 @@ export default function LogIn() {
     <form class = 'main-content__login-form'>
         <input type="email" placeholder="email" id='login-email' required />
         <input type="password" placeholder="password" id='login-password' required />
-      <button class='login-submit'>Sign up</button>
+      <button class='login-submit'>Login</button>
     </form>
 </div>
     `;

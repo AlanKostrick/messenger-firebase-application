@@ -37,7 +37,8 @@
 .nav-list__home,
 .nav-list__messages,
 .nav-list__signup,
-.nav-list__login {
+.nav-list__login,
+.nav-list__logout {
   border-radius: 8px;
   border-style: solid;
   border-width: 2px;
@@ -49,7 +50,8 @@
 .nav-list__home:hover,
 .nav-list__messages:hover,
 .nav-list__login:hover,
-.nav-list__signup:hover {
+.nav-list__signup:hover,
+.nav-list__logout:hover {
   background-color: #000;
   color: #fff;
   transition: 1s;

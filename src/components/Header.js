@@ -6,7 +6,8 @@ export default function Header() {
                     <li class= 'nav-list__home'>Home</li>
                     <li class= 'nav-list__messages'>Messages</li>
                     <li class= 'nav-list__signup'>Sign Up</li>
-                    <li class= 'nav-list__login'>Log In</li>
+                    <li class= 'nav-list__login'>Login</li>
+                    <li class= 'nav-list__logout'>Logout</li>
                 </ul>
             </nav>
 

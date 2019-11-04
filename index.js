@@ -17,6 +17,7 @@ function pageBuild() {
   navMessages();
   navLogIn();
   navSignUp();
+  navLogOut();
   footer();
 }
 
@@ -65,6 +66,30 @@ function navLogIn() {
   logInButton.addEventListener('click', function() {
     getAppContext().innerHTML = LogIn();
   });
+
+  getAppContext().addEventListener('click', function() {
+    if (event.target.classList.contains('login-submit')) {
+      const logInForm = document.querySelector('.main-content__login-form');
+      const email = document.querySelector('#login-email').value;
+      const password = document.querySelector('#login-password').value;
+
+      const auth = firebase.auth();
+      auth.signInWithEmailAndPassword(email, password).then(cred => {
+        //console.log(cred.user);
+      });
+      logInForm.reset();
+    }
+  });
+}
+
+function navLogOut() {
+  const logOutButton = document.querySelector('.nav-list__logout');
+  logOutButton.addEventListener('click', function() {
+    const auth = firebase.auth();
+    auth.signOut().then(() => {
+      //console.log('user signed out');
+    });
+  });
 }
 
 function navMessages() {
@@ -74,7 +99,14 @@ function navMessages() {
     getDatabaseCollectionContext()
       .get()
       .then(messages => {
-        getAppContext().innerHTML = Messages(messages);
+        const auth = firebase.auth();
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            getAppContext().innerHTML = Messages(messages);
+          } else {
+            getAppContext().innerText = 'Log in to see the message board';
+          }
+        });
       });
     focusOnSingularMessage();
   });
