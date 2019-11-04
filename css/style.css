@@ -69,7 +69,11 @@
 .add-message__messageBody,
 .update-message__messageTitle,
 .update-message__messageBody,
-.add-tag__tagName {
+.add-tag__tagName,
+#login-email,
+#login-password,
+#signup-email,
+#signup-password {
   border-radius: 6px;
   padding: 0.5rem;
   margin: 1rem;
