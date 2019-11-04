@@ -7,8 +7,8 @@ export default function Messages(messages) {
           const messageData = message.data();
           return `
               <section class='main-content__messages'>
-                  <h3>Title: ${messageData.title}</h3>
-                  <p>Content: ${messageData.content}</p>
+                  <h3>${messageData.title}</h3>
+                  <p>${messageData.content}</p>
                   <input class='delete-message__id' type='hidden' value="${message.id}">
                   <button class='delete-message__submit'>&times</button>
                   <button class='edit-message__submit'>...</button>

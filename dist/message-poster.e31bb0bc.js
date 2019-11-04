@@ -126,7 +126,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = Header;
 
 function Header() {
-  return "\n           <nav class= 'nav'>\n                <h1 class= 'nav-logo'>MyMessagesApp</h1>\n                <ul class= 'nav-list'>\n                    <li class= 'nav-list__home'>Home</li>\n                    <li class= 'nav-list__messages'>Messages</li>\n                </ul>\n            </nav>\n        ";
+  return "\n           <nav class= 'nav'>\n                <h1 class= 'nav-logo'>MyMessagesApp</h1>\n                <ul class= 'nav-list'>\n                    <li class= 'nav-list__home'>Home</li>\n                    <li class= 'nav-list__messages'>Messages</li>\n                </ul>\n            </nav>\n\n           \n        ";
 }
 },{}],"src/components/Footer.js":[function(require,module,exports) {
 "use strict";
@@ -148,7 +148,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = Home;
 
 function Home() {
-  return "\n        <div class='main-content'>\n        <h1 class='main-content__welcome'>Welcome to my message board</h1>\n        <h3 class='main-content__text'>Using Firebase</h3>\n        <div>\n        ";
+  return "\n        <div class='main-content'>\n        <h1 class='main-content__welcome'>Welcome to my message board</h1>\n        <h3 class='main-content__text'>Using Firebase</h3>\n        <div>\n\n        <section class='main-content__signup'>\n            <h4>Sign up</h4>\n            <form>\n                <input type=\"email\" placeholder=\"email\" id='signup-email' required />\n                <input type=\"password\" placeholder=\"password\" id='signup-password' required />\n              <button id='signup-submit'>Sign up</button>\n            </form>\n        </section>\n      \n        <section class='main-content__login'>\n            <h4>Log in</h4>\n            <form>\n                <input type=\"email\" placeholder=\"email\" id='login-email' required />\n                <input type=\"password\" placeholder=\"password\" id='login-password' required />\n              <button id='login-submit'>Sign up</button>\n            </form>\n        </section>\n        ";
 }
 },{}],"src/components/Messages.js":[function(require,module,exports) {
 "use strict";
@@ -175,7 +175,7 @@ exports.default = Tags;
 function Tags(tags) {
   return "\n        <div>\n        <h3>Tags</h3>\n        ".concat(tags.docs.map(function (tag) {
     var tagData = tag.data();
-    return "\n                <ul class='main-content__tags'>\n                    <li>".concat(tagData.tagName, "</li>\n                </ul>\n                ");
+    return "\n                <span class='main-content__tags'>".concat(tagData.tagName, "</span>\n                ");
   }).join(''), "\n        </div>\n        ");
 }
 },{}],"src/components/Message.js":[function(require,module,exports) {
@@ -193,7 +193,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Message(message) {
   var messageData = message.data();
   loadTags();
-  return "\n        <section class='main-content__messages'>\n            <h3>".concat(messageData.title, "</h3>\n            <p>").concat(messageData.content, "</p>\n            <div class=\"tags\"></div>\n        </section>\n            \n        <section class='update-message'>\n            <input class='update-message__messageTitle' type='text' placeholder='edit title'>\n            <input class='update-message__messageBody' type='text' placeholder='edit content'>\n            <button class='update-message__submit'>Edit</button>\n            <input class='update-message__id' type='hidden' value=\"").concat(message.id, "\">\n        </section>\n    \n        ");
+  return "\n        <h1>MyMessagesApp</h1>\n        <h3>You have a message.</h3>\n        <section class='main-content__message'>\n            <h3>".concat(messageData.title, "</h3>\n            <p>").concat(messageData.content, "</p>\n            <div class=\"tags\"></div>\n        </section>\n            \n        <section class='update-message'>\n            <input class='update-message__messageTitle' type='text' placeholder='edit title'>\n            <input class='update-message__messageBody' type='text' placeholder='edit content'>\n            <button class='update-message__submit'>Edit</button>\n            <input class='update-message__id' type='hidden' value=\"").concat(message.id, "\">\n        </section>\n\n        <section class='add-tag'>\n          <input class='add-tag__tagName' type='text' placeholder='add a tag'>\n          <button class = 'add-tag__submit'>Add</button>\n          <input class='add-tag__messageId' type='hidden' value=\"").concat(message.id, "\">\n        </section>\n    \n        ");
 
   function loadTags() {
     var db = firebase.firestore();
@@ -211,7 +211,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = MessageUpdate;
 
 function MessageUpdate() {
-  return "\n      <h2 class='main-content__update'>Message successfully sent</h2>\n      ";
+  return "\n     <h1>MyMessagesApp Update Notice</h1>\n      <h2 class='main-content__update'>Message successfully sent</h2>\n      ";
 }
 },{}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
@@ -300,6 +300,8 @@ var _Message = _interopRequireDefault(require("./src/components/Message"));
 
 var _MessageUpdate = _interopRequireDefault(require("./src/components/MessageUpdate"));
 
+var _Tags = _interopRequireDefault(require("./src/components/Tags"));
+
 require("./css/style.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -356,6 +358,44 @@ function navMessages() {
       }, 3000);
     }
   });
+  getAppContext().addEventListener('click', function () {
+    if (event.target.classList.contains('add-tag__submit')) {
+      var tagName = event.target.parentElement.querySelector('.add-tag__tagName').value;
+      var messageId = event.target.parentElement.querySelector('.add-tag__messageId').value;
+      getDatabaseTagContext(messageId).add({
+        tagName: tagName
+      });
+      getDatabaseTagContext(messageId).get().then(function (tags) {
+        document.querySelector('.tags').innerHTML = (0, _Tags.default)(tags);
+      });
+    }
+  }); //delete request
+
+  getAppContext().addEventListener('click', function () {
+    if (event.target.classList.contains('delete-message__submit')) {
+      var messageId = event.target.parentElement.querySelector('.delete-message__id').value;
+      console.log(messageId);
+      getDatabaseCollectionContext().doc(messageId).delete();
+      getDatabaseCollectionContext().get().then(function (messages) {
+        getAppContext().innerHTML = (0, _Messages.default)(messages);
+      });
+    }
+  }); //update request
+
+  getAppContext().addEventListener('click', function () {
+    if (event.target.classList.contains('update-message__submit')) {
+      var messageId = event.target.parentElement.querySelector('.update-message__id').value;
+      var messageTitle = event.target.parentElement.querySelector('.update-message__messageTitle').value;
+      var messageContent = event.target.parentElement.querySelector('.update-message__messageBody').value;
+      getDatabaseItemContext(messageId).update({
+        title: messageTitle,
+        content: messageContent
+      });
+      getDatabaseItemContext(messageId).get().then(function (message) {
+        document.querySelector('.main-content__message').innerHTML = (0, _Message.default)(message);
+      });
+    }
+  });
 } //allows for focus on the single post
 
 
@@ -386,7 +426,13 @@ function getDatabaseItemContext(id) {
   var messageRef = db.collection('messages').doc(id);
   return messageRef;
 }
-},{"./src/components/Header":"src/components/Header.js","./src/components/Footer":"src/components/Footer.js","./src/components/Home":"src/components/Home.js","./src/components/Messages":"src/components/Messages.js","./src/components/Message":"src/components/Message.js","./src/components/MessageUpdate":"src/components/MessageUpdate.js","./css/style.css":"css/style.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+function getDatabaseTagContext(messageId) {
+  var db = firebase.firestore();
+  var tagsRef = db.collection('messages').doc(messageId).collection('tags');
+  return tagsRef;
+}
+},{"./src/components/Header":"src/components/Header.js","./src/components/Footer":"src/components/Footer.js","./src/components/Home":"src/components/Home.js","./src/components/Messages":"src/components/Messages.js","./src/components/Message":"src/components/Message.js","./src/components/MessageUpdate":"src/components/MessageUpdate.js","./src/components/Tags":"src/components/Tags.js","./css/style.css":"css/style.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -414,7 +460,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62299" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51735" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
